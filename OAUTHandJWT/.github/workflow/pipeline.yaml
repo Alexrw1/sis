@@ -1,0 +1,28 @@
+name: Syntax Check
+
+on:
+  push:
+    branches:
+      - main # Fixed the hyphenation for the branch name
+
+jobs:
+  syntax-check:
+    runs-on: windows-latest # Corrected the keyword "runs-on"
+
+    steps:
+    - name: Checkout repository # Corrected the spelling of "Checkout"
+      uses: actions/checkout@v2
+    
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x'
+    
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Install NuGet package
+      run: dotnet add OAUTHandJWT/OAUTHandJWT.csproj package Microsoft.CodeAnalysis.NetAnalyzers --version 8.0.0 # Corrected the package name to "Microsoft.CodeAnalysis.NetAnalyzers"
+
+    - name: Run Roslyn Analyzers # Corrected the spelling of "Roslyn"
+      run: dotnet build OAUTHandJWT/OAUTHandJWT.csproj /p:WarningLevel=6 /p:DebugType=None /p:DebugSymbols=false /p:Platform="Any CPU" /p:TreatWarningsAsErrors=true
